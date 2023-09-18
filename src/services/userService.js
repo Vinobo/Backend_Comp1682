@@ -1,3 +1,4 @@
+import e from "express";
 import db from "../models/index";
 import bcrypt from 'bcryptjs';
 
@@ -54,7 +55,7 @@ let checkUserEmail = (userEmail) => {
       if (user) {
         resolve(true)
       } else {
-        resolve(falses)
+        resolve(false)
       }
     } catch (e) {
       reject(e);
@@ -62,6 +63,33 @@ let checkUserEmail = (userEmail) => {
   })
 }
 
+let getAllUsers = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let users = '';
+      if (userId === 'All') {
+        users = db.User.findAll({
+          attributes: {
+            exclude: ['password']
+          }
+        })
+      }
+      if (userId && userId !== 'All') {
+        users = await db.User.findOne({
+          where: { id: userId },
+          attributes: {
+            exclude: ['password']
+          }
+        })
+      }
+      resolve(users)
+    } catch (e) {
+      reject(e)
+    }
+  })
+}
+
 module.exports = {
-  handleUserLogin: handleUserLogin
+  handleUserLogin: handleUserLogin,
+  getAllUsers: getAllUsers
 }
