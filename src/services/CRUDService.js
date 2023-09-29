@@ -18,8 +18,8 @@ let createNewUser = async (data) => {
                 roleId: data.roleId
             })
             resolve('Create new user succeed')
-        } catch (error) {
-            reject(error);
+        } catch (e) {
+            reject(e);
         }
     })
 }
@@ -29,8 +29,8 @@ let hashUserPassword = (password) => {
         try {
             var hashPassword = await bcrypt.hashSync(password, salt);
             resolve(hashPassword);
-        } catch (error) {
-            reject(error);
+        } catch (e) {
+            reject(e);
         }
 
 
@@ -44,8 +44,8 @@ let getAllUser = () => {
                 raw: true,
             });
             resolve(users)
-        } catch (error) {
-            reject(error)
+        } catch (e) {
+            reject(e)
         }
     })
 }
@@ -64,8 +64,8 @@ let getUserInforbyId = (userId) => {
             else {
                 resolve([])
             }
-        } catch (error) {
-            reject(error);
+        } catch (e) {
+            reject(e);
         }
     })
 }
@@ -86,8 +86,8 @@ let updateUserData = (data) => {
             } else {
                 resolve();
             }
-        } catch (error) {
-
+        } catch (e) {
+            reject(e)
         }
     })
 }

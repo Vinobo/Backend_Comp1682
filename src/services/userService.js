@@ -9,8 +9,8 @@ let hashUserPassword = (password) => {
     try {
       var hashPassword = await bcrypt.hashSync(password, salt);
       resolve(hashPassword);
-    } catch (error) {
-      reject(error);
+    } catch (e) {
+      reject(e);
     }
 
 
@@ -112,7 +112,7 @@ let createNewUser = (data) => {
       if (check === true) {
         resolve({
           errCode: 1,
-          message: 'Your email is already in used, Pls try another email!'
+          errMessage: 'Your email is already in used, Pls try another email!'
         })
       } else {
         let hashPasswordFromBcrypt = await hashUserPassword(data.password);
@@ -167,8 +167,8 @@ let updateUserData = (data) => {
           errMessage: `User's not found!`
         });
       }
-    } catch (error) {
-      reject(error);
+    } catch (e) {
+      reject(e);
     }
   })
 }
@@ -196,10 +196,35 @@ let deleteUser = (userId) => {
   })
 }
 
+let getAllCodeService = (typeInput) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!typeInput) {
+        console.log(typeInput)
+        resolve({
+          errCode: 1,
+          errMessage: 'Missing required parameters !'
+        })
+      } else {
+        let res = {};
+        let allcode = await db.Allcode.findAll({
+          where: { type: typeInput }
+        });
+        res.errCode = 0;
+        res.data = allcode;
+        resolve(res);
+      }
+    } catch (e) {
+      reject(e)
+    }
+  })
+}
+
 module.exports = {
   handleUserLogin: handleUserLogin,
   getAllUsers: getAllUsers,
   createNewUser: createNewUser,
   updateUserData: updateUserData,
-  deleteUser: deleteUser
+  deleteUser: deleteUser,
+  getAllCodeService: getAllCodeService
 }
