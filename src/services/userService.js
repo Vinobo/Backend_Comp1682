@@ -26,7 +26,7 @@ let handleUserLogin = (email, password) => {
       if (isExist) {
         //user already exist
         let user = await db.User.findOne({
-          attributes: ['email', 'roleId', 'password'],
+          attributes: ['email', 'roleId', 'password', 'firstName', 'lastName'],
           where: { email: email },
           raw: true
         });
@@ -122,8 +122,9 @@ let createNewUser = (data) => {
           firstName: data.firstName,
           lastName: data.lastName,
           address: data.address,
-          phonenumber: data.phonenumber,
-          gender: data.gender === '1' ? true : false,
+          phoneNumber: data.phoneNumber,
+          gender: data.gender,
+          positionId: data.positionId,
           roleId: data.roleId
         })
         resolve({
