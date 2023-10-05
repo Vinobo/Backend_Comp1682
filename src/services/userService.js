@@ -125,7 +125,8 @@ let createNewUser = (data) => {
           phoneNumber: data.phoneNumber,
           gender: data.gender,
           positionId: data.positionId,
-          roleId: data.roleId
+          roleId: data.roleId,
+          image: data.avatar
         })
         resolve({
           errCode: 0,
@@ -158,8 +159,10 @@ let updateUserData = (data) => {
         user.phoneNumber = data.phoneNumber;
         user.gender = data.gender;
         user.positionId = data.positionId;
-        user.roleId = data.roleId
-
+        user.roleId = data.roleId;
+        if (data.avatar) {
+          user.image = data.avatar
+        }
         await user.save();
 
         resolve({
