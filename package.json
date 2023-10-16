@@ -1,7 +1,7 @@
 {
   "name": "nodejs",
   "version": "1.0.0",
-  "description": "backend nodejs hoiDanIT",
+  "description": "backend nodejs",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,10 +10,9 @@
   "keywords": [
     "fullstack",
     "nodejs",
-    "express",
-    "hoiDanIT"
+    "express"
   ],
-  "author": "Eric HoiDanIT",
+  "author": "Trinhnkgcs18897",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -22,6 +21,7 @@
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
+    "lodash": "^4.17.21",
     "mysql2": "^3.5.2",
     "sequelize": "^6.32.1"
   },
