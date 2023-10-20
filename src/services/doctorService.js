@@ -270,11 +270,49 @@ let getScheduleByDate = (doctorId, date) => {
   })
 }
 
+let getAddressFeeDoctorById = (doctorId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!doctorId) {
+        resolve({
+          errCode: 1,
+          errMessage: 'Missing required parameters !'
+        })
+      } else {
+        let data = await db.Doctor_Infor.findOne({
+          where: {
+            doctorId: doctorId
+          },
+          attributes: {
+            exclude: ['id', 'doctorId']
+          },
+          include: [
+            { model: db.Allcode, as: 'priceData', attributes: ['valueEn', 'valueVi'] },
+            { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] },
+            { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
+          ],
+          raw: false,
+          nest: true
+        })
+
+        if (!data) data = {};
+        resolve({
+          errCode: 0,
+          data: data
+        })
+      }
+    } catch (e) {
+      reject(e);
+    }
+  })
+}
+
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
   getAllDoctors: getAllDoctors,
   saveInforDoctor: saveInforDoctor,
   getDetailDoctorById: getDetailDoctorById,
   bulkCreateSchedule: bulkCreateSchedule,
-  getScheduleByDate: getScheduleByDate
+  getScheduleByDate: getScheduleByDate,
+  getAddressFeeDoctorById: getAddressFeeDoctorById
 }
