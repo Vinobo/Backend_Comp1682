@@ -15,12 +15,40 @@ module.exports = {
       address: {
         type: Sequelize.STRING
       },
-      description: {
-        type: Sequelize.TEXT
-      },
       image: {
-        type: Sequelize.STRING
+        type: Sequelize.BLOB('long')
       },
+      introHTML: {
+        type: Sequelize.TEXT('long')
+      },
+      introMarkdown: {
+        type: Sequelize.TEXT('long')
+      },
+      specialtyHTML: {
+        type: Sequelize.TEXT('long')
+      },
+      specialtyMarkdown: {
+        type: Sequelize.TEXT('long')
+      },
+      deviceHTML: {
+        type: Sequelize.TEXT('long')
+      },
+      deviceMarkdown: {
+        type: Sequelize.TEXT('long')
+      },
+      locationHTML: {
+        type: Sequelize.TEXT('long')
+      },
+      locationMarkdown: {
+        type: Sequelize.TEXT('long')
+      },
+      processHTML: {
+        type: Sequelize.TEXT('long')
+      },
+      processMarkdown: {
+        type: Sequelize.TEXT('long')
+      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

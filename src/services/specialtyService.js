@@ -66,8 +66,12 @@ let getDetailSpecialtyById = (inputId, location) => {
           where: {
             id: inputId
           },
-          attributes: ['descriptionHTML', 'descriptionMarkdown']
+          attributes: ['image', 'descriptionHTML', 'descriptionMarkdown']
         })
+
+        if (data && data.image) {
+          data.image = new Buffer.from(data.image, 'base64').toString('binary');
+        }
 
         if (data) {
           let doctorSpecialty = [];
