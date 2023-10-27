@@ -366,6 +366,9 @@ let getProfileDoctorById = (inputId) => {
                 { model: db.Allcode, as: 'priceData', attributes: ['valueEn', 'valueVi'] },
                 { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] },
                 { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
+
+                { model: db.Specialty, as: 'specialtyData', attributes: ['name'] },
+
               ]
             },
           ],
@@ -413,6 +416,8 @@ let getListPatientForDoctor = (doctorId, date) => {
                 { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] },
               ]
             },
+            { model: db.Allcode, as: 'timeTypeDataPatient', attributes: ['valueEn', 'valueVi'] },
+
           ],
           raw: false,
           nest: true
