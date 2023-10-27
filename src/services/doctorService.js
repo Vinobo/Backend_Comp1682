@@ -57,8 +57,8 @@ let getAllDoctors = () => {
 
 let checkRequiredFields = (inputData) => {
   let arrFields = ['doctorId', 'contentHTML', 'contentMarkdown', 'action',
-    'selectedPrice', 'selectedPayment', 'selectedProvince', 'nameClinic',
-    'addressClinic', 'note', 'specialtyId'
+    'selectedPrice', 'selectedPayment', 'selectedProvince', 'note',
+    'specialtyId'
   ];
 
   let isValid = true;
@@ -123,8 +123,6 @@ let saveInforDoctor = (inputData) => {
           doctorInfor.priceId = inputData.selectedPrice;
           doctorInfor.paymentId = inputData.selectedPayment;
           doctorInfor.provinceId = inputData.selectedProvince;
-          doctorInfor.nameClinic = inputData.nameClinic;
-          doctorInfor.addressClinic = inputData.addressClinic;
           doctorInfor.note = inputData.note;
           doctorInfor.specialtyId = inputData.specialtyId;
           doctorInfor.clinicId = inputData.clinicId;
@@ -136,8 +134,6 @@ let saveInforDoctor = (inputData) => {
             priceId: inputData.selectedPrice,
             paymentId: inputData.selectedPayment,
             provinceId: inputData.selectedProvince,
-            nameClinic: inputData.nameClinic,
-            addressClinic: inputData.addressClinic,
             note: inputData.note,
             specialtyId: inputData.specialtyId,
             clinicId: inputData.clinicId,
