@@ -64,6 +64,72 @@ let getBodyHTMLEmail = (dataSend) => {
   return result;
 }
 
+let sendAttachment = async (dataSend) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+          user: process.env.EMAIL_APP,
+          pass: process.env.EMAIL_APP_PASSWORD
+        }
+      });
+
+      // async..await is not allowed in global scope, must use a wrapper
+
+      // send mail with defined transport object
+      let info = await transporter.sendMail({
+        from: '"TrinhnkGCS18897 👻" <khoami123678@gmail.com>', // sender address
+        to: dataSend.email, // list of receivers
+        subject: "Kết quả khám bệnh", // Subject line
+        html: getBodyHTMLEmailRemedy(dataSend), // html body
+        attachments: [{
+          filename: `remedy-${dataSend.patientId}-${new Date().getTime()}.png`,
+          content: dataSend.imgBase64.split("base64,")[1],
+          encoding: 'base64'
+        }],
+      });
+
+      resolve({
+        errCode: 0,
+        errMessage: 'Ok'
+      })
+    }
+    catch (e) {
+      reject(e);
+    }
+  })
+}
+
+let getBodyHTMLEmailRemedy = (dataSend) => {
+  let result = '';
+  if (dataSend.language === 'en') {
+    result =
+      `
+    <h3>Dear ${dataSend.patientName},</h3>
+    <p>Bookingcare would like to send you information about the medical examination schedule you have booked.</p>
+    <p> bla bala bala</p>
+    <h4>Sincerely thank!</h4>
+    `
+  }
+
+  if (dataSend.language === 'vi') {
+    result =
+      `
+    <h3>Xin chào ${dataSend.patientName},</h3>
+    <p>Booking care xin gửi thông tin khám bệnh của bạn.</p>
+    <p>Thông tin đơn thuốc/hóa đơn được gửi trong file đính kèm.</p>
+    <h4>Xin chân thành cảm ơn!</h4>
+    `
+  }
+
+  return result;
+}
+
 module.exports = {
   sendSimpleEmail: sendSimpleEmail,
+  sendAttachment: sendAttachment,
 }

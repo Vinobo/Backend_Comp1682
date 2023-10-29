@@ -1,6 +1,7 @@
 import _ from "lodash";
 import db from "../models/index";
 require('dotenv').config();
+import emailService from './emailService'
 
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 
@@ -17,6 +18,9 @@ let getTopDoctorHome = (limit) => {
         include: [
           { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
           { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] },
+
+          { model: db.Doctor_Infor },
+
         ],
         raw: true,
         nest: true
@@ -440,6 +444,54 @@ let getListPatientForDoctor = (doctorId, date) => {
   })
 }
 
+let sendRemedy = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.email || !data.doctorId || !data.patientId || !data.timeType
+        || !data.imgBase64) {
+        resolve({
+          errCode: 1,
+          errMessage: 'Missing required parameters !'
+        })
+      } else {
+        //update patient status
+        let appointment = await db.Booking.findOne({
+          where: {
+            doctorId: data.doctorId,
+            patientId: data.patientId,
+            timeType: data.timeType,
+            statusId: 'S2'
+          },
+          raw: false
+        })
+
+        if (appointment) {
+          appointment.statusId = 'S3';
+          await appointment.save()
+        }
+
+        //send email remedy
+        await emailService.sendAttachment(data)
+
+        // if (data && data.image) {
+        //   data.image = new Buffer.from(data.image, 'base64').toString('binary');
+        // }
+
+        // if (!data) data = {};
+
+        resolve({
+          errCode: 0,
+          errMessage: 'Ok'
+          // data: data
+        })
+      }
+    } catch (e) {
+      reject(e);
+    }
+  })
+}
+
+
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
   getAllDoctors: getAllDoctors,
@@ -449,5 +501,6 @@ module.exports = {
   getScheduleByDate: getScheduleByDate,
   getAddressFeeDoctorById: getAddressFeeDoctorById,
   getProfileDoctorById: getProfileDoctorById,
-  getListPatientForDoctor: getListPatientForDoctor
+  getListPatientForDoctor: getListPatientForDoctor,
+  sendRemedy: sendRemedy
 }
