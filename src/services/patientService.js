@@ -14,7 +14,7 @@ let buildUrlEmail = (doctorId, token) => {
 let postBookAppointment = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (!data.email || !data.doctorId || !data.timeType || !data.date
+      if (!data.email || !data.doctorId || !data.timeType || !data.reason || !data.date
         || !data.fullName || !data.selectedGender || !data.address
       ) {
         resolve({
@@ -55,6 +55,7 @@ let postBookAppointment = (data) => {
               patientId: user[0].id,
               date: data.date,
               timeType: data.timeType,
+              reason: data.reason,
               token: token
             }
 

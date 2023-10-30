@@ -19,10 +19,15 @@ let getTopDoctorHome = (limit) => {
           { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
           { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] },
 
-          { model: db.Doctor_Infor },
+          {
+            model: db.Doctor_Infor,
+            include: [
+              { model: db.Specialty, as: 'specialtyData', attributes: ['name'] }
+            ]
+          },
 
         ],
-        raw: true,
+        raw: false,
         nest: true
       })
 
@@ -61,7 +66,7 @@ let getAllDoctors = () => {
 
 let checkRequiredFields = (inputData) => {
   let arrFields = ['doctorId', 'contentHTML', 'contentMarkdown', 'action',
-    'selectedPrice', 'selectedPayment', 'selectedProvince', 'note',
+    'selectedPrice', 'selectedPayment', 'selectedProvince', 'note', 'remote',
     'specialtyId'
   ];
 
@@ -128,6 +133,7 @@ let saveInforDoctor = (inputData) => {
           doctorInfor.paymentId = inputData.selectedPayment;
           doctorInfor.provinceId = inputData.selectedProvince;
           doctorInfor.note = inputData.note;
+          doctorInfor.remote = inputData.remote;
           doctorInfor.specialtyId = inputData.specialtyId;
           doctorInfor.clinicId = inputData.clinicId;
           await doctorInfor.save()
@@ -139,6 +145,7 @@ let saveInforDoctor = (inputData) => {
             paymentId: inputData.selectedPayment,
             provinceId: inputData.selectedProvince,
             note: inputData.note,
+            remote: inputData.remote,
             specialtyId: inputData.specialtyId,
             clinicId: inputData.clinicId,
           })
@@ -188,8 +195,6 @@ let getDetailDoctorById = (inputId) => {
                 { model: db.Allcode, as: 'priceData', attributes: ['valueEn', 'valueVi'] },
                 { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] },
                 { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
-
-                // { model: db.Specialty, as: 'specialtyData', attributes: ['name'] },
               ]
             },
           ],
