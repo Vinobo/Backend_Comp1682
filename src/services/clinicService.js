@@ -1,11 +1,33 @@
 import db from "../models/index";
 
+let checkRequiredFields = (data) => {
+  let arrFields = ['name', 'imageBase64', 'address', 'introHTML', 'introMarkdown',
+    'specialtyMarkdown', 'specialtyHTML', 'deviceHTML', 'deviceMarkdown',
+    'locationHTML', 'locationMarkdown', 'processHTML', 'processMarkdown'
+  ];
+
+  let isValid = true;
+  let element = '';
+  for (let i = 0; i < arrFields.length; i++) {
+    if (!data[arrFields[i]]) {
+      isValid = false;
+      element = arrFields[i]
+      break;
+    }
+  }
+
+  return {
+    isValid: isValid,
+    element: element
+  }
+}
+
 let createNewClinic = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (!data.name || !data.imageBase64 || !data.address
-        || !data.introHTML || !data.introMarkdown
-      ) {
+      let checkObj = checkRequiredFields(data)
+
+      if (checkObj.isValid === false) {
         resolve({
           errCode: 1,
           errMessage: 'Missing parameter'
@@ -16,7 +38,15 @@ let createNewClinic = (data) => {
           image: data.imageBase64,
           address: data.address,
           introHTML: data.introHTML,
-          introMarkdown: data.introMarkdown
+          introMarkdown: data.introMarkdown,
+          specialtyHTML: data.specialtyHTML,
+          specialtyMarkdown: data.specialtyMarkdown,
+          deviceHTML: data.deviceHTML,
+          deviceMarkdown: data.deviceMarkdown,
+          locationHTML: data.locationHTML,
+          locationMarkdown: data.locationMarkdown,
+          processHTML: data.processHTML,
+          processMarkdown: data.processMarkdown
         })
 
         resolve({
@@ -67,7 +97,9 @@ let getDetailClinicById = (inputId) => {
           where: {
             id: inputId
           },
-          attributes: ['name', 'address', 'image', 'introHTML', 'introMarkdown']
+          attributes: ['name', 'address', 'image', 'introHTML', 'introMarkdown',
+            'specialtyHTML', 'deviceHTML', 'locationHTML', 'processHTML'
+          ]
         })
 
         if (data && data.image) {
