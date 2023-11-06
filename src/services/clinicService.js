@@ -2,8 +2,7 @@ import db from "../models/index";
 
 let checkRequiredFields = (data) => {
   let arrFields = ['name', 'imageBase64', 'address', 'introHTML', 'introMarkdown',
-    'specialtyMarkdown', 'specialtyHTML', 'deviceHTML', 'deviceMarkdown',
-    'locationHTML', 'locationMarkdown', 'processHTML', 'processMarkdown'
+    'specialtyMarkdown', 'specialtyHTML', 'deviceHTML', 'deviceMarkdown'
   ];
 
   let isValid = true;

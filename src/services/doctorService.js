@@ -133,7 +133,6 @@ let saveInforDoctor = (inputData) => {
           doctorInfor.paymentId = inputData.selectedPayment;
           doctorInfor.provinceId = inputData.selectedProvince;
           doctorInfor.note = inputData.note;
-          doctorInfor.remote = inputData.remote;
           doctorInfor.specialtyId = inputData.specialtyId;
           doctorInfor.clinicId = inputData.clinicId;
           await doctorInfor.save()
@@ -145,7 +144,6 @@ let saveInforDoctor = (inputData) => {
             paymentId: inputData.selectedPayment,
             provinceId: inputData.selectedProvince,
             note: inputData.note,
-            remote: inputData.remote,
             specialtyId: inputData.specialtyId,
             clinicId: inputData.clinicId,
           })
@@ -375,6 +373,8 @@ let getProfileDoctorById = (inputId) => {
                 { model: db.Allcode, as: 'priceData', attributes: ['valueEn', 'valueVi'] },
                 { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] },
                 { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
+
+                { model: db.Clinic, as: 'clinicData' },
 
                 { model: db.Specialty, as: 'specialtyData', attributes: ['name'] },
 
