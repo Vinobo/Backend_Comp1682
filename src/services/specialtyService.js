@@ -1,9 +1,10 @@
 import db from "../models/index";
+require('dotenv').config();
 
 let createNewSpecialty = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (!data.nameSpecialty || !data.imageBase64 || !data.descriptionHTML
+      if (!data.nameSpecialty || !data.descriptionHTML
         || !data.descriptionMarkdown
       ) {
         resolve({
@@ -11,12 +12,27 @@ let createNewSpecialty = (data) => {
           errMessage: 'Missing parameter'
         })
       } else {
-        await db.Specialty.create({
-          name: data.nameSpecialty,
-          image: data.imageBase64,
-          descriptionHTML: data.descriptionHTML,
-          descriptionMarkdown: data.descriptionMarkdown
-        })
+        if (data.action === 'CREATE') {
+          await db.Specialty.create({
+            name: data.nameSpecialty,
+            image: data.imageBase64,
+            descriptionHTML: data.descriptionHTML,
+            descriptionMarkdown: data.descriptionMarkdown
+          })
+        } else if (data.action === 'EDIT') {
+          let specialtyData = await db.Specialty.findOne({
+            where: { id: data.id },
+            raw: false
+          })
+
+          if (specialtyData) {
+            specialtyData.name = data.nameSpecialty;
+            specialtyData.image = data.imageBase64;
+            specialtyData.descriptionHTML = data.descriptionHTML;
+            specialtyData.descriptionMarkdown = data.descriptionMarkdown;
+            await specialtyData.save()
+          }
+        }
 
         resolve({
           errCode: 0,
@@ -66,7 +82,7 @@ let getDetailSpecialtyById = (inputId, location) => {
           where: {
             id: inputId
           },
-          attributes: ['image', 'descriptionHTML', 'descriptionMarkdown']
+          attributes: ['name', 'image', 'descriptionHTML', 'descriptionMarkdown']
         })
 
         if (data && data.image) {
