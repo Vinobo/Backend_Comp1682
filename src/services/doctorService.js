@@ -122,6 +122,7 @@ let saveInforDoctor = (inputData) => {
         //upsert to Doctor_infor table
         let doctorInfor = await db.Doctor_Infor.findOne({
           where: {
+
             doctorId: inputData.doctorId,
           },
           raw: false
@@ -154,6 +155,120 @@ let saveInforDoctor = (inputData) => {
           errMessage: 'Save infor doctor succed'
         })
       }
+    } catch (e) {
+      reject(e)
+    }
+  })
+}
+
+let getAllDoctorInfor = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let data = await db.User.findAll({
+        where: {
+          roleId: 'R2'
+        },
+        attributes: {
+          exclude: ['password']
+        },
+        include: [
+          {
+            model: db.Markdown,
+            attributes: ['contentHTML', 'contentMarkdown', 'description']
+          },
+
+          { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
+
+          {
+            model: db.Doctor_Infor,
+            attributes: {
+              exclude: ['id', 'doctorId']
+            },
+            include: [
+              { model: db.Allcode, as: 'priceData', attributes: ['valueEn', 'valueVi'] },
+              { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] },
+              { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
+
+              { model: db.Specialty, as: 'specialtyData', attributes: ['name'] },
+            ]
+          },
+        ],
+        raw: false,
+        nest: true
+      })
+
+      if (data && data.image) {
+        data.image = new Buffer.from(data.image, 'base64').toString('binary');
+      }
+
+      if (!data) data = {};
+
+      resolve({
+        errCode: 0,
+        data: data
+      })
+    } catch (e) {
+      reject(e);
+    }
+  })
+}
+
+let handleDeleteDoctorInfor = (doctorId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let doctor = await db.Doctor_Infor.findOne({
+        where: {
+          doctorId: doctorId
+        },
+      })
+
+      if (!doctor) {
+        resolve({
+          errCode: 2,
+          errMessage: `The doctor-infor isn't exist`
+        })
+      }
+
+      await db.Doctor_Infor.destroy({
+        where: { doctorId: doctorId }
+      })
+
+      let user = await db.User.findOne({
+        where: { id: doctorId }
+      })
+
+      if (!user) {
+        resolve({
+          errCode: 2,
+          errMessage: `The user isn't exist`
+        })
+      }
+
+      await db.User.destroy({
+        where: { id: doctorId }
+      })
+
+      let markdown = await db.Markdown.findOne({
+        where: {
+          doctorId: doctorId
+        },
+      })
+
+      if (!markdown) {
+        resolve({
+          errCode: 2,
+          errMessage: `The markdown isn't exist`
+        })
+      }
+
+      await db.Markdown.destroy({
+        where: { doctorId: doctorId }
+      })
+
+      resolve({
+        errCode: 0,
+        message: 'The doctor-infor is deleted'
+      })
     } catch (e) {
       reject(e)
     }
@@ -501,6 +616,8 @@ module.exports = {
   getTopDoctorHome: getTopDoctorHome,
   getAllDoctors: getAllDoctors,
   saveInforDoctor: saveInforDoctor,
+  getAllDoctorInfor: getAllDoctorInfor,
+  handleDeleteDoctorInfor: handleDeleteDoctorInfor,
   getDetailDoctorById: getDetailDoctorById,
   bulkCreateSchedule: bulkCreateSchedule,
   getScheduleByDate: getScheduleByDate,
