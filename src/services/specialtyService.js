@@ -126,8 +126,38 @@ let getDetailSpecialtyById = (inputId, location) => {
   })
 }
 
+let handleDeleteSpecialty = (specialtyId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let specialty = await db.Specialty.findOne({
+        where: {
+          id: specialtyId
+        },
+      })
+      if (!specialty) {
+        resolve({
+          errCode: 2,
+          errMessage: `The specialty isn't exist`
+        })
+      }
+
+      await db.Specialty.destroy({
+        where: { id: specialtyId }
+      })
+
+      resolve({
+        errCode: 0,
+        message: 'The specialty is deleted'
+      })
+    } catch (e) {
+      reject(e)
+    }
+  })
+}
+
 module.exports = {
   createNewSpecialty: createNewSpecialty,
   getAllSpecialties: getAllSpecialties,
-  getDetailSpecialtyById: getDetailSpecialtyById
+  getDetailSpecialtyById: getDetailSpecialtyById,
+  handleDeleteSpecialty: handleDeleteSpecialty
 }
