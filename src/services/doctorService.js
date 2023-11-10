@@ -403,11 +403,20 @@ let getScheduleByDate = (doctorId, date) => {
           nest: true
         })
 
+        let dataBooking = await db.Booking.findAll({
+          where: {
+            doctorId: doctorId,
+            date: date
+          }
+        })
+
+        if (!dataBooking) dataBooking = [];
+
         if (!dataSchedule) dataSchedule = [];
 
         resolve({
           errCode: 0,
-          data: dataSchedule
+          data: { dataSchedule, dataBooking }
         })
       }
     } catch (e) {
