@@ -379,6 +379,8 @@ let bulkCreateSchedule = (data) => {
   })
 }
 
+
+
 let getScheduleByDate = (doctorId, date) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -394,31 +396,55 @@ let getScheduleByDate = (doctorId, date) => {
             date: date
           },
           include: [
-            { model: db.Allcode, as: 'timeTypeData', attributes: ['valueEn', 'valueVi'] },
-
-            { model: db.User, as: 'doctorData', attributes: ['firstName', 'lastName'] },
-
+            {
+              model: db.Allcode, as: 'timeTypeData', attributes: ['valueEn', 'valueVi']
+            },
+            {
+              model: db.User, as: 'doctorData', attributes: ['firstName', 'lastName'],
+            },
+            {
+              model: db.Booking, as: 'bookingData', attributes: ['timeType']
+            },
           ],
           raw: false,
           nest: true
         })
 
-        let dataBooking = await db.Booking.findAll({
-          where: {
-            doctorId: doctorId,
-            date: date
-          }
-        })
-
-        if (!dataBooking) dataBooking = [];
-
         if (!dataSchedule) dataSchedule = [];
 
         resolve({
           errCode: 0,
-          data: { dataSchedule, dataBooking }
+          data: dataSchedule
         })
       }
+    } catch (e) {
+      reject(e);
+    }
+  })
+}
+
+let handleDeleteSchedule = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let schedule = await db.Schedule.findOne({
+        where: { id: id }
+      })
+
+      if (!schedule) {
+        resolve({
+          errCode: 2,
+          errMessage: `The schedule isn't exist`
+        })
+      }
+
+      await db.Schedule.destroy({
+        where: { id: id }
+      })
+
+      resolve({
+        errCode: 0,
+        message: 'The schedule is deleted'
+      })
     } catch (e) {
       reject(e);
     }
@@ -620,6 +646,76 @@ let sendRemedy = (data) => {
   })
 }
 
+let getDetailDoctorByLocation = (location) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!location) {
+        resolve({
+          errCode: 1,
+          errMessage: 'Missing parameter'
+        })
+      } else {
+
+        let data = await db.User.findAll({
+          where: { roleId: 'R2' },
+          order: [['createdAt', 'DESC']],
+          attributes: {
+            exclude: ['password']
+          },
+          include: [
+            { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
+            { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] },
+
+            {
+              model: db.Doctor_Infor,
+              include: [
+                { model: db.Specialty, as: 'specialtyData', attributes: ['name'] },
+                { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
+              ]
+            },
+
+          ],
+          raw: false,
+          nest: true
+        })
+
+        if (data && data.image) {
+          data.image = new Buffer.from(data.image, 'base64').toString('binary');
+        }
+
+        if (data) {
+          let doctor = [];
+          if (location === 'ALL') {
+            doctor = await db.Doctor_Infor.findAll({
+              attributes: ['provinceId']
+            })
+          } else {
+            //find by location
+            doctor = await db.Doctor_Infor.findAll({
+              where: {
+                provinceId: 'PRO1'
+              },
+              attributes: ['provinceId']
+            })
+          }
+
+          data.doctor = doctor;
+
+        } else data = {}
+
+        resolve({
+          errCode: 0,
+          errMessage: 'Ok',
+          data
+        })
+
+      }
+    } catch (e) {
+      reject(e);
+    }
+  })
+}
+
 
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
@@ -630,8 +726,10 @@ module.exports = {
   getDetailDoctorById: getDetailDoctorById,
   bulkCreateSchedule: bulkCreateSchedule,
   getScheduleByDate: getScheduleByDate,
+  handleDeleteSchedule: handleDeleteSchedule,
   getAddressFeeDoctorById: getAddressFeeDoctorById,
   getProfileDoctorById: getProfileDoctorById,
   getListPatientForDoctor: getListPatientForDoctor,
-  sendRemedy: sendRemedy
+  sendRemedy: sendRemedy,
+  getDetailDoctorByLocation: getDetailDoctorByLocation
 }

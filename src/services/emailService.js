@@ -31,7 +31,7 @@ let getBodyHTMLEmail = (dataSend) => {
     result =
       `
     <h3>Dear ${dataSend.patientName},</h3>
-    <p>Bookingcare would like to send you information about the medical examination schedule you have booked.</p>
+    <p>Livecare would like to send you information about the medical examination schedule you have booked.</p>
     <p><b>Medical examination schedule information:</b></p>
     <p><b>Doctor:</b> ${dataSend.doctorName},</p>
     <p><b>Timen:</b> ${dataSend.time}</p>
@@ -110,7 +110,7 @@ let getBodyHTMLEmailRemedy = (dataSend) => {
     result =
       `
     <h3>Dear ${dataSend.patientName},</h3>
-    <p>Bookingcare would like to send you information about the medical examination schedule you have booked.</p>
+    <p>Livecare would like to send you information about the medical examination schedule you have booked.</p>
     <p> bla bala bala</p>
     <h4>Sincerely thank!</h4>
     `
@@ -120,7 +120,7 @@ let getBodyHTMLEmailRemedy = (dataSend) => {
     result =
       `
     <h3>Xin chào ${dataSend.patientName},</h3>
-    <p>Booking care xin gửi thông tin khám bệnh của bạn.</p>
+    <p>Livecare xin gửi thông tin khám bệnh của bạn.</p>
     <p>Thông tin đơn thuốc/hóa đơn được gửi trong file đính kèm.</p>
     <h4>Xin chân thành cảm ơn!</h4>
     `
