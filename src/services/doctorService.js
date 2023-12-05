@@ -52,6 +52,18 @@ let getAllDoctors = () => {
         attributes: {
           exclude: ['password']
         },
+        include: [
+          { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
+
+          {
+            model: db.Doctor_Infor,
+            include: [
+              { model: db.Specialty, as: 'specialtyData', attributes: ['name'] }
+            ]
+          },
+        ],
+        raw: false,
+        nest: true
       })
 
       resolve({
