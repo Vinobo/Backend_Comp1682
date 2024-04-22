@@ -89,16 +89,18 @@ let postBookAppointment = (data) => {
           })
 
           if (booking && schedule) {
-            if (booking.statusId && booking.statusId === "S2") {
-              schedule.hasBooking = true;
-            } else {
+            if (booking.statusId && booking.statusId === "S1") {
               schedule.hasBooking = false;
+              await schedule.save();
               await db.Booking.destroy({
-                where: { statusId: "S1" }
+                where: {
+                  patientId: user[0].id,
+                  date: data.date,
+                  timeType: data.timeType,
+                  statusId: "S1"
+                }
               });
             }
-
-            await schedule.save();
           }
         }, 600000)
 
