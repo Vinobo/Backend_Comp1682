@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import db from "../models/index";
 require('dotenv').config();
 import emailService from './emailService';
@@ -59,9 +60,47 @@ let postBookAppointment = (data) => {
               reason: data.reason,
               token: token
             }
-
           })
         }
+
+        //change status hasBooking of Schedule
+        let schedule = await db.Schedule.findOne({
+          where: {
+            doctorId: data.doctorId,
+            date: data.date,
+            timeType: data.timeType
+          },
+          raw: false
+        })
+
+        if (schedule) {
+          schedule.hasBooking = true;
+          await schedule.save();
+        }
+
+        //Check that the patient has confirmed the appointment within 10 minutes. Cancel the patient's appointment if it has not been confirmed.
+        setTimeout(async () => {
+          let booking = await db.Booking.findOne({
+            where: {
+              patientId: user[0].id,
+              date: data.date,
+              timeType: data.timeType,
+            }
+          })
+
+          if (booking && schedule) {
+            if (booking.statusId && booking.statusId === "S2") {
+              schedule.hasBooking = true;
+            } else {
+              schedule.hasBooking = false;
+              await db.Booking.destroy({
+                where: { statusId: "S1" }
+              });
+            }
+
+            await schedule.save();
+          }
+        }, 600000)
 
         resolve({
           errCode: 0,
@@ -94,7 +133,8 @@ let postVerifyAppointment = (data) => {
 
         if (appointment) {
           appointment.statusId = 'S2';
-          await appointment.save()
+          await appointment.save();
+
 
           resolve({
             errCode: 0,

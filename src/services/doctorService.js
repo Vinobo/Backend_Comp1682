@@ -413,9 +413,10 @@ let getScheduleByDate = (doctorId, date) => {
             },
             {
               model: db.User, as: 'doctorData', attributes: ['firstName', 'lastName'],
+              include: { model: db.Booking, as: 'bookData' }
             },
             {
-              model: db.Booking, as: 'bookingData', attributes: ['timeType']
+              model: db.Booking, as: 'bookingData', attributes: ["date", 'timeType']
             },
           ],
           raw: false,

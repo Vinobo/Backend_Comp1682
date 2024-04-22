@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
       Schedule.belongsTo(models.User, { foreignKey: 'doctorId', targetKey: 'id', as: 'doctorData' })
 
-      Schedule.belongsTo(models.Booking, { foreignKey: 'doctorId', as: 'bookingData' })
+      Schedule.hasMany(models.Booking, { foreignKey: 'doctorId', as: 'bookingData' })
 
     }
   }
@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     maxNumber: DataTypes.INTEGER,
     date: DataTypes.STRING,
     timeType: DataTypes.STRING,
-    doctorId: DataTypes.INTEGER
+    doctorId: DataTypes.INTEGER,
+    hasBooking: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'Schedule',
