@@ -6,23 +6,22 @@ var path = require('path');
 var Sequelize = require('sequelize');
 var process = require('process');
 var basename = path.basename(__filename);
-var env = process.env.NODE_ENV || 'development';
-// const config = require(__dirname + '/../config/config.json')[env];
+// const config = require(__dirname + '/../config/config.json')[process.env];
 var db = {};
 var customizeConfig = {
+  dialect: process.env.DB_DIALECT,
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
-  dialect: process.env.DB_DIALECT,
   logging: false,
   timezone: "+07:00",
   query: {
     "raw": true
   }
 };
-var sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, +process.env.DB_PASSWORD, customizeConfig);
+var sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, customizeConfig);
 
-// if (config.use_env_variable) {
-//   sequelize = new Sequelize(process.env[config.use_env_variable], config);
+// if (config.use_process.env_variable) {
+//   sequelize = new Sequelize(process.env[config.use_process.env_variable], config);
 // } else {
 //   sequelize = new Sequelize(config.database, config.username, config.password, config);
 // }

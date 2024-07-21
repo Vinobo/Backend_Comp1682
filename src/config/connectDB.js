@@ -1,9 +1,10 @@
+require('dotenv').config();
 const { Sequelize } = require('sequelize');
 // Option 3: Passing parameters separately (other dialects)
 const sequelize = new Sequelize(
   process.env.NAME,
   process.env.DB_USERNAME,
-  +process.env.DB_PASSWORD,
+  process.env.DB_PASSWORD,
   {
     dialect: process.env.DB_DIALECT,
     host: process.env.DB_HOST,

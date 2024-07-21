@@ -3,7 +3,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
-// const process = require('process');
+const process = require('process');
 const basename = path.basename(__filename);
 // const config = require(__dirname + '/../config/config.json')[process.env];
 let db = {};
@@ -20,7 +20,7 @@ const customizeConfig = {
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USERNAME,
-  +process.env.DB_PASSWORD,
+  process.env.DB_PASSWORD,
   customizeConfig
 )
 
