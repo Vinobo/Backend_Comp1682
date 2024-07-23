@@ -24,6 +24,10 @@ module.exports = {
       doctorId: {
         type: Sequelize.INTEGER
       },
+      hasBooking: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

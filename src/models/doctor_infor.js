@@ -29,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
     provinceId: DataTypes.STRING,
     paymentId: DataTypes.STRING,
     note: DataTypes.STRING,
-    remote: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'Doctor_Infor',

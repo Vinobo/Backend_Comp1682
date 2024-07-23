@@ -16,10 +16,10 @@ module.exports = {
         type: Sequelize.BLOB('long')
       },
       descriptionHTML: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT('long')
       },
       descriptionMarkdown: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT('long')
       },
       createdAt: {
         allowNull: false,

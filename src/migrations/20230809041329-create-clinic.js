@@ -48,6 +48,10 @@ module.exports = {
       processMarkdown: {
         type: Sequelize.TEXT('long')
       },
+      provinceId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
 
       createdAt: {
         allowNull: false,
