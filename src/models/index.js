@@ -9,9 +9,9 @@ const basename = path.basename(__filename);
 let db = {};
 
 const customizeConfig = {
-  dialect: process.env.DB_DIALECT,
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
+  dialect: process.env.DB_DIALECT,
   logging: false,
   dialectOptions:
     process.env.DB_SSL === 'true' ?

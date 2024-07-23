@@ -20,7 +20,7 @@ module.exports = {
           }
         } : {}
     ,
-    "timezone": "+07:00"
+    timezone: "+07:00"
   },
   test: {
     username: "root",
