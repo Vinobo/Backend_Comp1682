@@ -11,7 +11,7 @@ function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf 
 function _createSuper(t) { var r = _isNativeReflectConstruct(); return function () { var e, o = _getPrototypeOf(t); if (r) { var s = _getPrototypeOf(this).constructor; e = Reflect.construct(o, arguments, s); } else e = o.apply(this, arguments); return _possibleConstructorReturn(this, e); }; }
 function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
 function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
-function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () { })); } catch (t) { } return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
 function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
 var _require = require('sequelize'),
   Model = _require.Model;
@@ -26,39 +26,39 @@ module.exports = function (sequelize, DataTypes) {
     _createClass(Doctor_Infor, null, [{
       key: "associate",
       value:
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        function associate(models) {
-          Doctor_Infor.belongsTo(models.User, {
-            foreignKey: 'doctorId'
-          });
-          Doctor_Infor.belongsTo(models.Allcode, {
-            foreignKey: 'priceId',
-            targetKey: 'keyMap',
-            as: 'priceData'
-          });
-          Doctor_Infor.belongsTo(models.Allcode, {
-            foreignKey: 'paymentId',
-            targetKey: 'keyMap',
-            as: 'paymentData'
-          });
-          Doctor_Infor.belongsTo(models.Allcode, {
-            foreignKey: 'provinceId',
-            targetKey: 'keyMap',
-            as: 'provinceData'
-          });
-          Doctor_Infor.belongsTo(models.Specialty, {
-            foreignKey: 'specialtyId',
-            as: 'specialtyData'
-          });
-          Doctor_Infor.belongsTo(models.Clinic, {
-            foreignKey: 'clinicId',
-            as: 'clinicData'
-          });
-        }
+      /**
+       * Helper method for defining associations.
+       * This method is not a part of Sequelize lifecycle.
+       * The `models/index` file will call this method automatically.
+       */
+      function associate(models) {
+        Doctor_Infor.belongsTo(models.User, {
+          foreignKey: 'doctorId'
+        });
+        Doctor_Infor.belongsTo(models.Allcode, {
+          foreignKey: 'priceId',
+          targetKey: 'keyMap',
+          as: 'priceData'
+        });
+        Doctor_Infor.belongsTo(models.Allcode, {
+          foreignKey: 'paymentId',
+          targetKey: 'keyMap',
+          as: 'paymentData'
+        });
+        Doctor_Infor.belongsTo(models.Allcode, {
+          foreignKey: 'provinceId',
+          targetKey: 'keyMap',
+          as: 'provinceData'
+        });
+        Doctor_Infor.belongsTo(models.Specialty, {
+          foreignKey: 'specialtyId',
+          as: 'specialtyData'
+        });
+        Doctor_Infor.belongsTo(models.Clinic, {
+          foreignKey: 'clinicId',
+          as: 'clinicData'
+        });
+      }
     }]);
     return Doctor_Infor;
   }(Model);
@@ -69,7 +69,7 @@ module.exports = function (sequelize, DataTypes) {
     priceId: DataTypes.STRING,
     provinceId: DataTypes.STRING,
     paymentId: DataTypes.STRING,
-    note: DataTypes.STRING,
+    note: DataTypes.STRING
   }, {
     sequelize: sequelize,
     modelName: 'Doctor_Infor'

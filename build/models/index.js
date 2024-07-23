@@ -9,10 +9,16 @@ var basename = path.basename(__filename);
 // const config = require(__dirname + '/../config/config.json')[process.env];
 var db = {};
 var customizeConfig = {
-  dialect: process.env.DB_DIALECT,
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
+  dialect: process.env.DB_DIALECT,
   logging: false,
+  dialectOptions: process.env.DB_SSL === 'true' ? {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  } : {},
   timezone: "+07:00",
   query: {
     "raw": true

@@ -26,13 +26,17 @@ module.exports = {
                 type: Sequelize.INTEGER
               },
               date: {
-                type: Sequelize.STRING
+                type: Sequelize.BIGINT
               },
               timeType: {
                 type: Sequelize.STRING
               },
               doctorId: {
                 type: Sequelize.INTEGER
+              },
+              hasBooking: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false
               },
               createdAt: {
                 allowNull: false,

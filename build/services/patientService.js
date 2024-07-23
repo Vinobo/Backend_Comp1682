@@ -17,7 +17,7 @@ var buildUrlEmail = function buildUrlEmail(doctorId, token) {
 var postBookAppointment = function postBookAppointment(data) {
   return new Promise( /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(resolve, reject) {
-      var token, user, schedule;
+      var token, user, existToken, schedule;
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
@@ -30,21 +30,12 @@ var postBookAppointment = function postBookAppointment(data) {
               errCode: 1,
               errMessage: 'Missing parameter'
             });
-            _context2.next = 23;
+            _context2.next = 31;
             break;
           case 5:
             token = (0, _uuid.v4)(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d';
+            //upsert patient
             _context2.next = 8;
-            return _emailService["default"].sendSimpleEmail({
-              receiversEmail: data.email,
-              patientName: data.fullName,
-              doctorName: data.doctorName,
-              time: data.timeString,
-              language: data.language,
-              redirectLink: buildUrlEmail(data.doctorId, token)
-            });
-          case 8:
-            _context2.next = 10;
             return _index["default"].User.findOrCreate({
               where: {
                 email: data.email
@@ -58,13 +49,40 @@ var postBookAppointment = function postBookAppointment(data) {
                 phoneNumber: data.phoneNumber
               }
             });
-          case 10:
+          case 8:
             user = _context2.sent;
             if (!(user && user[0])) {
-              _context2.next = 14;
+              _context2.next = 31;
               break;
             }
-            _context2.next = 14;
+            _context2.next = 12;
+            return _index["default"].Booking.findOne({
+              where: {
+                patientId: user[0].id
+              },
+              attributes: ['token']
+            });
+          case 12:
+            existToken = _context2.sent;
+            if (!(existToken && existToken.token !== token)) {
+              _context2.next = 18;
+              break;
+            }
+            _context2.next = 16;
+            return _index["default"].Booking.create({
+              statusId: 'S1',
+              doctorId: data.doctorId,
+              patientId: user[0].id,
+              date: data.date,
+              timeType: data.timeType,
+              reason: data.reason,
+              token: token
+            });
+          case 16:
+            _context2.next = 20;
+            break;
+          case 18:
+            _context2.next = 20;
             return _index["default"].Booking.findOrCreate({
               where: {
                 patientId: user[0].id
@@ -79,8 +97,8 @@ var postBookAppointment = function postBookAppointment(data) {
                 token: token
               }
             });
-          case 14:
-            _context2.next = 16;
+          case 20:
+            _context2.next = 22;
             return _index["default"].Schedule.findOne({
               where: {
                 doctorId: data.doctorId,
@@ -89,16 +107,26 @@ var postBookAppointment = function postBookAppointment(data) {
               },
               raw: false
             });
-          case 16:
+          case 22:
             schedule = _context2.sent;
             if (!schedule) {
-              _context2.next = 21;
+              _context2.next = 29;
               break;
             }
             schedule.hasBooking = true;
-            _context2.next = 21;
+            _context2.next = 27;
             return schedule.save();
-          case 21:
+          case 27:
+            _context2.next = 29;
+            return _emailService["default"].sendSimpleEmail({
+              receiversEmail: data.email,
+              patientName: data.fullName,
+              doctorName: data.doctorName,
+              time: data.timeString,
+              language: data.language,
+              redirectLink: buildUrlEmail(data.doctorId, token)
+            });
+          case 29:
             //Check that the patient has confirmed the appointment within 10 minutes. Cancel the patient's appointment if it has not been confirmed.
             setTimeout( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
               var booking;
@@ -115,8 +143,8 @@ var postBookAppointment = function postBookAppointment(data) {
                     });
                   case 2:
                     booking = _context.sent;
-                    if (!(booking && schedule)) {
-                      _context.next = 10;
+                    if (!booking) {
+                      _context.next = 12;
                       break;
                     }
                     if (!(booking.statusId && booking.statusId === "S1")) {
@@ -137,6 +165,11 @@ var postBookAppointment = function postBookAppointment(data) {
                       }
                     });
                   case 10:
+                    _context.next = 13;
+                    break;
+                  case 12:
+                    schedule.hasBooking = false;
+                  case 13:
                   case "end":
                     return _context.stop();
                 }
@@ -144,20 +177,20 @@ var postBookAppointment = function postBookAppointment(data) {
             })), 600000);
             resolve({
               errCode: 0,
-              errMessage: 'Save infor doctor succed'
+              errMessage: 'Confirm the info sent to your email'
             });
-          case 23:
-            _context2.next = 28;
+          case 31:
+            _context2.next = 36;
             break;
-          case 25:
-            _context2.prev = 25;
+          case 33:
+            _context2.prev = 33;
             _context2.t0 = _context2["catch"](0);
             reject(_context2.t0);
-          case 28:
+          case 36:
           case "end":
             return _context2.stop();
         }
-      }, _callee2, null, [[0, 25]]);
+      }, _callee2, null, [[0, 33]]);
     }));
     return function (_x, _x2) {
       return _ref.apply(this, arguments);

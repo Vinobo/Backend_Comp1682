@@ -31,6 +31,10 @@ module.exports = {
               lastName: {
                 type: Sequelize.STRING
               },
+              birthday: {
+                type: Sequelize.INTEGER,
+                allowNull: true
+              },
               address: {
                 type: Sequelize.STRING
               },
@@ -47,7 +51,7 @@ module.exports = {
                 type: Sequelize.STRING
               },
               image: {
-                type: Sequelize.STRING
+                type: Sequelize.BLOB
               },
               createdAt: {
                 allowNull: false,

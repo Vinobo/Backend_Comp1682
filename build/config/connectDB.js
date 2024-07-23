@@ -8,15 +8,21 @@ require('dotenv').config();
 var _require = require('sequelize'),
   Sequelize = _require.Sequelize;
 // Option 3: Passing parameters separately (other dialects)
-var sequelize = new Sequelize(process.env.NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+var sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
   dialect: process.env.DB_DIALECT,
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   logging: false,
-  timezone: "+07:00",
+  dialectOptions: process.env.DB_SSL === 'true' ? {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  } : {},
   query: {
     "raw": true
-  }
+  },
+  timezone: "+07:00"
 });
 var connectDB = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {

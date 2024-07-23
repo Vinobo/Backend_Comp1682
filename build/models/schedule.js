@@ -53,7 +53,7 @@ module.exports = function (sequelize, DataTypes) {
   Schedule.init({
     currentNumber: DataTypes.INTEGER,
     maxNumber: DataTypes.INTEGER,
-    date: DataTypes.STRING,
+    date: DataTypes.BIGINT,
     timeType: DataTypes.STRING,
     doctorId: DataTypes.INTEGER,
     hasBooking: DataTypes.BOOLEAN
