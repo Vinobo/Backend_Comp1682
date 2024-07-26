@@ -412,12 +412,12 @@ let getScheduleByDate = (doctorId, date) => {
               model: db.Allcode, as: 'timeTypeData', attributes: ['valueEn', 'valueVi']
             },
             {
-              model: db.User, as: 'doctorData', attributes: ['firstName', 'lastName'],
-              include: { model: db.Booking, as: 'bookData' }
+              model: db.User, as: 'doctorData', attributes: ['firstName', 'lastName']
+              // include: { model: db.Booking, as: 'bookData' }
             },
-            {
-              model: db.Booking, as: 'bookingData', attributes: ["date", 'timeType']
-            },
+            // {
+            //   model: db.Booking, as: 'bookingData', attributes: ["date", 'timeType']
+            // },
           ],
           raw: false,
           nest: true

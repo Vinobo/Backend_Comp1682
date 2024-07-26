@@ -36,7 +36,7 @@ let getBodyHTMLEmail = (dataSend) => {
     <p><b>Doctor:</b> ${dataSend.doctorName},</p>
     <p><b>Timen:</b> ${dataSend.time}</p>
     <div>If the above information is correct with the information you placed, 
-    please click on the link below to confirm and complete the medical appointment booking process..</div>
+    please click on the link below to confirm and complete the medical appointment booking process in 10 minutes.</div>
     <div>
       <a href=${dataSend.redirectLink} target="_blank">Click here</a>
     </div>
@@ -53,7 +53,7 @@ let getBodyHTMLEmail = (dataSend) => {
     <p><b>Bác sĩ:</b> ${dataSend.doctorName},</p>
     <p><b>Thời gian:</b> ${dataSend.time}</p>
     <div>Nếu thông tin trên đúng với thông tin bạn đặt, xin vui lòng click vào đường link bên dưới để xác nhận và 
-    hoàn tất thử tục đặt lịch khám bệnh.</div>
+    hoàn tất thử tục đặt lịch khám bệnh trong vòng 10 phút.</div>
     <div>
       <a href=${dataSend.redirectLink} target="_blank">Click here</a>
     </div>

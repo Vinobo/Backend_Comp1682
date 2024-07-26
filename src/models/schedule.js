@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
       Schedule.belongsTo(models.User, { foreignKey: 'doctorId', targetKey: 'id', as: 'doctorData' })
 
-      Schedule.hasMany(models.Booking, { foreignKey: 'doctorId', as: 'bookingData' })
+      // Schedule.hasMany(models.Booking, { foreignKey: 'doctorId', as: 'bookingData' })
 
     }
   }
