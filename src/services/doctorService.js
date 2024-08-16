@@ -30,6 +30,12 @@ let getTopDoctorHome = (limit) => {
         raw: false,
         nest: true
       })
+      if (users && users.length > 0) {
+        users.map(item => {
+          item.image = new Buffer.from(item.image, 'base64').toString('binary');
+          return item;
+        })
+      }
 
       resolve({
         errCode: 0,
@@ -65,6 +71,12 @@ let getAllDoctors = () => {
         raw: false,
         nest: true
       })
+      if (doctors && doctors.length > 0) {
+        doctors.map(item => {
+          item.image = new Buffer.from(item.image, 'base64').toString('binary');
+          return item;
+        })
+      }
 
       resolve({
         errCode: 0,
@@ -209,8 +221,11 @@ let getAllDoctorInfor = () => {
         nest: true
       })
 
-      if (data && data.image) {
-        data.image = new Buffer.from(data.image, 'base64').toString('binary');
+      if (data && data.length > 0) {
+        data.map(item => {
+          item.image = new Buffer.from(item.image, 'base64').toString('binary');
+          return item;
+        })
       }
 
       if (!data) data = {};
