@@ -49,21 +49,27 @@ var getTopDoctorHome = function getTopDoctorHome(limit) {
             });
           case 3:
             users = _context.sent;
+            if (users && users.length > 0) {
+              users.map(function (item) {
+                item.image = new Buffer.from(item.image, 'base64').toString('binary');
+                return item;
+              });
+            }
             resolve({
               errCode: 0,
               data: users
             });
-            _context.next = 10;
+            _context.next = 11;
             break;
-          case 7:
-            _context.prev = 7;
+          case 8:
+            _context.prev = 8;
             _context.t0 = _context["catch"](0);
             reject(_context.t0);
-          case 10:
+          case 11:
           case "end":
             return _context.stop();
         }
-      }, _callee, null, [[0, 7]]);
+      }, _callee, null, [[0, 8]]);
     }));
     return function (_x, _x2) {
       return _ref.apply(this, arguments);
@@ -103,21 +109,27 @@ var getAllDoctors = function getAllDoctors() {
             });
           case 3:
             doctors = _context2.sent;
+            if (doctors && doctors.length > 0) {
+              doctors.map(function (item) {
+                item.image = new Buffer.from(item.image, 'base64').toString('binary');
+                return item;
+              });
+            }
             resolve({
               errCode: 0,
               data: doctors
             });
-            _context2.next = 10;
+            _context2.next = 11;
             break;
-          case 7:
-            _context2.prev = 7;
+          case 8:
+            _context2.prev = 8;
             _context2.t0 = _context2["catch"](0);
             reject(_context2.t0);
-          case 10:
+          case 11:
           case "end":
             return _context2.stop();
         }
-      }, _callee2, null, [[0, 7]]);
+      }, _callee2, null, [[0, 8]]);
     }));
     return function (_x3, _x4) {
       return _ref2.apply(this, arguments);
@@ -309,8 +321,11 @@ var getAllDoctorInfor = function getAllDoctorInfor() {
             });
           case 3:
             data = _context4.sent;
-            if (data && data.image) {
-              data.image = new Buffer.from(data.image, 'base64').toString('binary');
+            if (data && data.length > 0) {
+              data.map(function (item) {
+                item.image = new Buffer.from(item.image, 'base64').toString('binary');
+                return item;
+              });
             }
             if (!data) data = {};
             resolve({
@@ -614,16 +629,13 @@ var getScheduleByDate = function getScheduleByDate(doctorId, date) {
               }, {
                 model: _index["default"].User,
                 as: 'doctorData',
-                attributes: ['firstName', 'lastName'],
-                include: {
-                  model: _index["default"].Booking,
-                  as: 'bookData'
-                }
-              }, {
-                model: _index["default"].Booking,
-                as: 'bookingData',
-                attributes: ["date", 'timeType']
-              }],
+                attributes: ['firstName', 'lastName']
+                // include: { model: db.Booking, as: 'bookData' }
+              }
+              // {
+              //   model: db.Booking, as: 'bookingData', attributes: ["date", 'timeType']
+              // },
+              ],
               raw: false,
               nest: true
             });
