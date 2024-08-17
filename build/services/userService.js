@@ -180,8 +180,10 @@ var getAllUsers = function getAllUsers(userId) {
             users = _context4.sent;
             if (users && users.length > 0) {
               users.map(function (item) {
-                item.image = new Buffer.from(item.image, 'base64').toString('binary');
-                return item;
+                if (item.image) {
+                  item.image = new Buffer.from(item.image, 'base64').toString('binary');
+                  return item;
+                }
               });
             }
           case 7:
