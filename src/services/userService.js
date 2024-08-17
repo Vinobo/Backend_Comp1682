@@ -107,7 +107,6 @@ let getAllUsers = (userId) => {
             exclude: ['password']
           }
         })
-        users.image = new Buffer.from(users.image, 'base64').toString('binary');
       }
 
       resolve(users)

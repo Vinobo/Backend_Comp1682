@@ -186,7 +186,7 @@ var getAllUsers = function getAllUsers(userId) {
             }
           case 7:
             if (!(userId && userId !== 'All')) {
-              _context4.next = 12;
+              _context4.next = 11;
               break;
             }
             _context4.next = 10;
@@ -200,20 +200,19 @@ var getAllUsers = function getAllUsers(userId) {
             });
           case 10:
             users = _context4.sent;
-            users.image = new Buffer.from(users.image, 'base64').toString('binary');
-          case 12:
+          case 11:
             resolve(users);
-            _context4.next = 18;
+            _context4.next = 17;
             break;
-          case 15:
-            _context4.prev = 15;
+          case 14:
+            _context4.prev = 14;
             _context4.t0 = _context4["catch"](0);
             reject(_context4.t0);
-          case 18:
+          case 17:
           case "end":
             return _context4.stop();
         }
-      }, _callee4, null, [[0, 15]]);
+      }, _callee4, null, [[0, 14]]);
     }));
     return function (_x7, _x8) {
       return _ref4.apply(this, arguments);
