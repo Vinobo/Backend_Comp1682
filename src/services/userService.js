@@ -83,7 +83,7 @@ let getAllUsers = (userId) => {
     try {
       let users = '';
       if (userId === 'All') {
-        users = db.User.findAll({
+        users = await db.User.findAll({
           attributes: {
             exclude: ['password']
           },
@@ -93,6 +93,12 @@ let getAllUsers = (userId) => {
           },
           raw: false,
         })
+        if (users && users.length > 0) {
+          users.map(item => {
+            item.image = new Buffer.from(item.image, 'base64').toString('binary');
+            return item;
+          })
+        }
       }
       if (userId && userId !== 'All') {
         users = await db.User.findOne({
@@ -101,7 +107,9 @@ let getAllUsers = (userId) => {
             exclude: ['password']
           }
         })
+        users.image = new Buffer.from(users.image, 'base64').toString('binary');
       }
+
       resolve(users)
     } catch (e) {
       reject(e)
@@ -166,7 +174,7 @@ let updateUserData = (data) => {
         user.positionId = data.positionId;
         user.roleId = data.roleId;
         if (data.avatar) {
-          user.image = data.avatar
+          user.image = data.avatar;
         }
         await user.save();
 

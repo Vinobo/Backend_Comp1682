@@ -160,24 +160,36 @@ var getAllUsers = function getAllUsers(userId) {
           case 0:
             _context4.prev = 0;
             users = '';
-            if (userId === 'All') {
-              users = _index["default"].User.findAll({
-                attributes: {
-                  exclude: ['password']
-                },
-                include: {
-                  model: _index["default"].Allcode,
-                  as: 'roleData',
-                  attributes: ['valueEn', 'valueVi']
-                },
-                raw: false
-              });
-            }
-            if (!(userId && userId !== 'All')) {
+            if (!(userId === 'All')) {
               _context4.next = 7;
               break;
             }
-            _context4.next = 6;
+            _context4.next = 5;
+            return _index["default"].User.findAll({
+              attributes: {
+                exclude: ['password']
+              },
+              include: {
+                model: _index["default"].Allcode,
+                as: 'roleData',
+                attributes: ['valueEn', 'valueVi']
+              },
+              raw: false
+            });
+          case 5:
+            users = _context4.sent;
+            if (users && users.length > 0) {
+              users.map(function (item) {
+                item.image = new Buffer.from(item.image, 'base64').toString('binary');
+                return item;
+              });
+            }
+          case 7:
+            if (!(userId && userId !== 'All')) {
+              _context4.next = 12;
+              break;
+            }
+            _context4.next = 10;
             return _index["default"].User.findOne({
               where: {
                 id: userId
@@ -186,21 +198,22 @@ var getAllUsers = function getAllUsers(userId) {
                 exclude: ['password']
               }
             });
-          case 6:
-            users = _context4.sent;
-          case 7:
-            resolve(users);
-            _context4.next = 13;
-            break;
           case 10:
-            _context4.prev = 10;
+            users = _context4.sent;
+            users.image = new Buffer.from(users.image, 'base64').toString('binary');
+          case 12:
+            resolve(users);
+            _context4.next = 18;
+            break;
+          case 15:
+            _context4.prev = 15;
             _context4.t0 = _context4["catch"](0);
             reject(_context4.t0);
-          case 13:
+          case 18:
           case "end":
             return _context4.stop();
         }
-      }, _callee4, null, [[0, 10]]);
+      }, _callee4, null, [[0, 15]]);
     }));
     return function (_x7, _x8) {
       return _ref4.apply(this, arguments);
